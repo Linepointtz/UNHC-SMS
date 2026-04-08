@@ -1,0 +1,1702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNHC-SMS | Ubungo NHC Secondary School Management System</title>
+    <meta name="description" content="Ubungo NHC Secondary School Management System - Complete Academic Management Solution">
+    <meta name="author" content="Ubungo NHC Secondary School">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+        }
+
+        /* Login Page */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .school-logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .school-logo h1 {
+            font-size: 32px;
+            color: #1e3c72;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .school-logo .system-tag {
+            font-size: 12px;
+            color: #2a5298;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .school-logo p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .user-type-selector {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .user-type-btn {
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .user-type-btn i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .user-type-btn.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .demo-credentials {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 12px;
+            border-left: 4px solid #2a5298;
+        }
+
+        /* Main App */
+        .app-container {
+            display: none;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo h2 {
+            font-size: 1.5rem;
+            color: #1e3c72;
+            font-weight: bold;
+        }
+
+        .logo .system-name {
+            font-size: 0.75rem;
+            color: #2a5298;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .logo p {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: #2a5298;
+        }
+
+        .logout-btn, .change-pwd-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+        }
+
+        .change-pwd-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s;
+            color: #666;
+        }
+
+        .nav-btn:hover {
+            background: #f0f0f0;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Dashboard Stats */
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border-left: 4px solid #2a5298;
+            cursor: pointer;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1e3c72;
+        }
+
+        /* Sections */
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-header h2 {
+            color: #1e3c72;
+            border-left: 4px solid #2a5298;
+            padding-left: 15px;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+            color: #333;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f7f7f7;
+            color: #1e3c72;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #1e3c72;
+            padding-bottom: 10px;
+        }
+
+        .close {
+            cursor: pointer;
+            font-size: 24px;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+            min-width: 300px;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .welcome-message {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-admin { background: #dc3545; color: white; }
+        .badge-teacher { background: #28a745; color: white; }
+        .badge-student { background: #17a2b8; color: white; }
+        .badge-parent { background: #ffc107; color: #333; }
+        .badge-Aplus { background: #28a745; color: white; }
+        .badge-A { background: #20c997; color: white; }
+        .badge-B { background: #17a2b8; color: white; }
+        .badge-C { background: #ffc107; color: #333; }
+        .badge-D { background: #fd7e14; color: white; }
+        .badge-F { background: #dc3545; color: white; }
+        
+        .position-1st { background: #ffd700; color: #333; padding: 4px 12px; border-radius: 20px; font-weight: bold; display: inline-block; }
+        .position-2nd { background: #c0c0c0; color: #333; padding: 4px 12px; border-radius: 20px; font-weight: bold; display: inline-block; }
+        .position-3rd { background: #cd7f32; color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; display: inline-block; }
+
+        .exam-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #1e3c72;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { gap: 0.5rem; }
+            .nav-btn { padding: 0.25rem 0.5rem; font-size: 0.85rem; }
+            .container { padding: 0 1rem; }
+            .section { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <div class="school-logo">
+			<div style ="background-color: green; color: white; padding: 10px; animation: grow 5s infinite; overflow: hidden;">
+			<marquee direction="left">
+			Welcome to Ubungo NHC Secondary School management system ~ <strong>UNHC-SMS</strong>
+			</marquee>
+			</div>
+                <div class="system-tag">UBUNGO NHC SECONDARY SCHOOL</div>
+                <p>Management System</p>
+                <p style="font-size: 12px; margin-top: 5px;">Excellence in Education Management | Est. 2026</p>
+            </div>
+            <div class="user-type-selector">
+                <button class="user-type-btn active" onclick="selectUserType('admin')"><i class="fas fa-user-shield"></i> Admin</button>
+                <button class="user-type-btn" onclick="selectUserType('teacher')"><i class="fas fa-chalkboard-user"></i> Teacher</button>
+                <button class="user-type-btn" onclick="selectUserType('student')"><i class="fas fa-user-graduate"></i> Student</button>
+                <button class="user-type-btn" onclick="selectUserType('parent')"><i class="fas fa-users"></i> Parent</button>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Username / ID</label>
+                    <input type="text" id="username" required placeholder="Enter your username or ID">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="login-btn">Login to UNHC-SMS</button>
+                <div id="loginError" style="color: red; margin-top: 10px;"></div>
+            </form>
+            
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="appContainer" class="app-container">
+        <div class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h2><i class="fas fa-school"></i> UNHC-SMS</h2>
+                    <div class="system-name">Ubungo NHC Secondary School</div>
+                    <p>Management System | Excellence in Education</p>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="currentUser"></span>
+                    <button class="change-pwd-btn" onclick="openChangePasswordModal()"><i class="fas fa-key"></i> Change Password</button>
+                    <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+            <div class="nav-container">
+                <div class="nav-links" id="navLinks"></div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div id="alert" class="alert"></div>
+            <div id="dashboardContent"></div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2026 UNHC-SMS | Ubungo NHC Secondary School Management System | Empowering Education Through Technology</p>
+            <p>P.O. Box 55068, Ubungo, Dar es Salaam, Tanzania | Tel: +255 754 200 790 | Email: ubungonhcsecondary@gmail.com</p>
+        </div>
+    </div>
+
+    <!-- Rest of the modals remain the same -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> Add New User - UNHC-SMS</h3>
+                <span class="close" onclick="closeModal('addUserModal')">&times;</span>
+            </div>
+            <form id="addUserForm">
+                <div class="form-group">
+                    <label>User Role <span style="color: red;">*</span></label>
+                    <select id="userRole" required>
+                        <option value="">Select Role</option>
+                        <option value="teacher">👩‍🏫 Teacher</option>
+                        <option value="student">👨‍🎓 Student</option>
+                        <option value="parent">👨‍👩‍👧 Parent</option>
+                        <option value="admin">👨‍💼 Admin</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Full Name <span style="color: red;">*</span></label>
+                    <input type="text" id="userName" required placeholder="Enter full name">
+                </div>
+                <div class="form-group">
+                    <label>Email Address <span style="color: red;">*</span></label>
+                    <input type="email" id="userEmail" required placeholder="Enter email address">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="userPhone" placeholder="Enter phone number">
+                </div>
+                <div id="teacherFields" style="display: none;">
+                    <div class="form-group"><label>Subject Specialization</label><input type="text" id="teacherSubject" placeholder="e.g., Mathematics, Physics"></div>
+                    <div class="form-group"><label>Assigned Class</label><input type="text" id="teacherClass" placeholder="e.g., Form 1A"></div>
+                    <div class="form-group"><label>Qualification</label><input type="text" id="teacherQualification" placeholder="e.g., BSc, MSc, PhD"></div>
+                </div>
+                <div id="studentFields" style="display: none;">
+                    <div class="form-group"><label>Class</label><input type="text" id="studentClass" placeholder="e.g., Form 1A"></div>
+                    <div class="form-group"><label>Registration Number</label><input type="text" id="studentRollNo" placeholder="Enter registration number"></div>
+                    <div class="form-group"><label>Date of Birth</label><input type="date" id="studentDob"></div>
+                    <div class="form-group"><label>Gender</label><select id="studentGender"><option value="Male">Male</option><option value="Female">Female</option></select></div>
+                </div>
+                <div id="parentFields" style="display: none;">
+                    <div class="form-group"><label>Student ID (Link to student)</label><input type="text" id="parentStudentId" placeholder="e.g., S001"></div>
+                    <div class="form-group"><label>Occupation</label><input type="text" id="parentOccupation" placeholder="e.g., Engineer, Doctor"></div>
+                </div>
+                <div class="form-group">
+                    <label>Password <span style="color: red;">*</span></label>
+                    <input type="password" id="userPassword" required placeholder="Enter password (min 6 characters)">
+                </div>
+                <div class="form-group">
+                    <label>Confirm Password <span style="color: red;">*</span></label>
+                    <input type="password" id="confirmPassword" required placeholder="Confirm password">
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> Create User</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="addExamMarksModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-pen"></i> Enter Exam Marks - UNHC-SMS</h3>
+                <span class="close" onclick="closeModal('addExamMarksModal')">&times;</span>
+            </div>
+            <form id="addExamMarksForm">
+                <div class="form-group">
+                    <label>Exam Type <span style="color: red;">*</span></label>
+                    <select id="examType" required>
+                        <option value="">Select Exam Type</option>
+                        <option value="Midterm">📝 Midterm Test</option>
+                        <option value="Terminal">📚 Terminal Exam</option>
+                        <option value="MidSeptember">🍂 Mid-September Exam</option>
+                        <option value="Annual">🎓 Annual Exam</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Student</label>
+                    <select id="examStudentId" required><option value="">Select Student</option></select>
+                </div>
+                <div class="form-group">
+                    <label>Subject</label>
+                    <input type="text" id="examSubject" required placeholder="e.g., Mathematics">
+                </div>
+                <div class="form-group">
+                    <label>Marks (0-100)</label>
+                    <input type="number" id="examMarks" min="0" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label>Term/Year</label>
+                    <input type="text" id="examTerm" placeholder="e.g., Term 1, 2026" value="Term 1, 2026">
+                </div>
+                <button type="submit"><i class="fas fa-save"></i> Save Marks</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="forgotPasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Reset Password - UNHC-SMS</h3><span class="close" onclick="closeModal('forgotPasswordModal')">&times;</span></div>
+            <form id="forgotPasswordForm">
+                <div class="form-group"><label>User Type</label><select id="resetUserType"><option value="admin">Admin</option><option value="teacher">Teacher</option><option value="student">Student</option><option value="parent">Parent</option></select></div>
+                <div class="form-group"><label>Username/ID</label><input type="text" id="resetUsername" required></div>
+                <div class="form-group"><label>New Password</label><input type="password" id="newPassword" required></div>
+                <div class="form-group"><label>Confirm Password</label><input type="password" id="confirmPasswordReset" required></div>
+                <button type="submit">Reset Password</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Change Password - UNHC-SMS</h3><span class="close" onclick="closeModal('changePasswordModal')">&times;</span></div>
+            <form id="changePasswordForm">
+                <div class="form-group"><label>Current Password</label><input type="password" id="currentPassword" required></div>
+                <div class="form-group"><label>New Password</label><input type="password" id="newPasswordChange" required></div>
+                <div class="form-group"><label>Confirm Password</label><input type="password" id="confirmNewPassword" required></div>
+                <button type="submit">Update Password</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Complete Database with All User Roles
+        let schoolData = {
+            users: {
+                admin: [
+                    { id: 'admin', password: 'admin123', name: 'Mr. Paul Paschal', email: 'admin@ubungonhc.ac.tz', phone: '+255 683 077 440', role: 'admin', createdAt: '2026-03-27' }
+                ],
+                teachers: [
+                    { id: 'T001', password: 'teacher123', name: 'Ms. Violeth Salewa', email: 'salewa@ubungonhc.ac.tz', phone: '+255 657 986 478', subject: 'Historia na Maadili', class: 'Form 1A', qualification: 'Degree', experience: '10 years', role: 'teacher', createdAt: '2026-03-27' },
+                    { id: 'T002', password: 'teacher123', name: 'Mr. Joshua Malya', email: 'joshua@ubungonhc.ac.tz', phone: '+255 753 400 245', subject: 'Mathematics', class: 'Form 1B', qualification: 'Degree', experience: '4 years', role: 'teacher', createdAt: '2026-03-27' },
+                    { id: 'T003', password: 'teacher123', name: 'Ms. Winner Uronu', email: 'winner@ubungonhc.ac.tz', phone: '+255 710 229 414', subject: 'Chemistry', class: 'Form 1A', qualification: 'Degree', experience: '1 years', role: 'teacher', createdAt: '2026-03-27' }
+                ],
+                students: [
+                    { id: 'S001', password: 'student123', name: 'John Doe', email: 'john@student.ubungonhc.ac.tz', phone: '+255 712 345 678', class: 'Form 1A', rollNo: '001', parentId: 'P001', gender: 'Male', dob: '2008-05-15', role: 'student', createdAt: '2026-03-27' },
+                    { id: 'S002', password: 'student123', name: 'Jane Smith', email: 'jane@student.ubungonhc.ac.tz', phone: '+255 712 345 679', class: 'Form 1A', rollNo: '002', parentId: 'P002', gender: 'Female', dob: '2008-08-20', role: 'student', createdAt: '2026-03-27' },
+                    { id: 'S003', password: 'student123', name: 'Michael John', email: 'michael@student.ubungonhc.ac.tz', phone: '+255 712 345 680', class: 'Form 1B', rollNo: '003', parentId: 'P003', gender: 'Male', dob: '2008-03-10', role: 'student', createdAt: '2026-03-27' },
+                    { id: 'S004', password: 'student123', name: 'Emily Davis', email: 'emily@student.ubungonhc.ac.tz', phone: '+255 712 345 681', class: 'Form 1B', rollNo: '004', parentId: 'P004', gender: 'Female', dob: '2009-01-25', role: 'student', createdAt: '2026-03-27' }
+                ],
+                parents: [
+                    { id: 'P001', password: 'parent123', name: 'Mr. Robert Doe', email: 'robert.doe@email.com', phone: '+255 712 345 678', studentId: 'S001', occupation: 'Engineer', role: 'parent', createdAt: '2026-03-27' },
+                    { id: 'P002', password: 'parent123', name: 'Mrs. Mary Smith', email: 'mary.smith@email.com', phone: '+255 712 345 679', studentId: 'S002', occupation: 'Teacher', role: 'parent', createdAt: '2026-03-27' },
+                    { id: 'P003', password: 'parent123', name: 'Mr. Peter John', email: 'peter.john@email.com', phone: '+255 712 345 680', studentId: 'S003', occupation: 'Businessman', role: 'parent', createdAt: '2026-03-27' },
+                    { id: 'P004', password: 'parent123', name: 'Mrs. Sarah Davis', email: 'sarah.davis@email.com', phone: '+255 712 345 681', studentId: 'S004', occupation: 'Doctor', role: 'parent', createdAt: '2026-03-27' }
+                ]
+            },
+            examMarks: [],
+            classes: [
+                { id: 'C001', name: 'Form 1A', teacherId: 'T001', subject: 'Historia na Maadili', room: 'Room 101', capacity: 40 },
+                { id: 'C002', name: 'Form 1B', teacherId: 'T002', subject: 'Mathematics', room: 'Room 102', capacity: 40 }
+            ],
+            attendance: [],
+            fees: [],
+            announcements: [
+                { id: 'A001', title: '📢 Welcome to UNHC-SMS', content: 'Ubungo NHC Secondary School Management System is now live!', date: '2026-03-27', postedBy: 'admin' },
+                { id: 'A002', title: '🏆 Academic Excellence Awards', content: 'Awards ceremony for outstanding students on April 20th at 10:00 AM.', date: '2026-03-27', postedBy: 'admin' }
+            ]
+        };
+
+        let currentUser = null;
+        let selectedUserType = 'admin';
+
+        // Initialize Sample Exam Data
+        function initializeExamData() {
+            if (schoolData.examMarks.length === 0) {
+                const examTypes = ['Midterm', 'Terminal', 'MidSeptember', 'Annual'];
+                const subjects = ['Mathematics', 'Physics', 'English', 'Chemistry', 'Biology', 'History'];
+                
+                schoolData.users.students.forEach(student => {
+                    examTypes.forEach(examType => {
+                        subjects.forEach(subject => {
+                            const marks = Math.floor(Math.random() * (95 - 40 + 1) + 40);
+                            schoolData.examMarks.push({
+                                id: `${student.id}_${examType}_${subject}_${Date.now()}`,
+                                studentId: student.id,
+                                studentName: student.name,
+                                examType: examType,
+                                subject: subject,
+                                marks: marks,
+                                term: examType === 'Annual' ? 'Annual 2024' : 'Term 1, 2024',
+                                date: new Date().toISOString().split('T')[0]
+                            });
+                        });
+                    });
+                });
+            }
+            if (schoolData.fees.length === 0) {
+                schoolData.users.students.forEach(student => {
+                    schoolData.fees.push({ id: `F_${student.id}`, studentId: student.id, amount: 500000, dueDate: '2024-03-31', status: 'Pending' });
+                });
+            }
+        }
+
+        // Helper Functions
+        function getGradeFromMarks(marks) {
+            if (marks >= 74.5) return 'A';
+            if (marks >= 64.5) return 'B';
+            if (marks >= 44.5) return 'C';
+            if (marks >= 30) return 'D';
+            return 'F';
+        }
+
+        function getGradeClass(marks) {
+            if (marks >= 74.5) return 'A';
+            if (marks >= 64.5) return 'B';
+            if (marks >= 44.5) return 'C';
+            if (marks >= 30) return 'D';
+            return 'F';
+        }
+
+        function calculateStudentPerformance(studentId, examType = null) {
+            let studentMarks = schoolData.examMarks.filter(m => m.studentId === studentId);
+            if (examType) {
+                studentMarks = studentMarks.filter(m => m.examType === examType);
+            }
+            if (studentMarks.length === 0) return null;
+            const totalMarks = studentMarks.reduce((sum, m) => sum + m.marks, 0);
+            const averageMarks = (totalMarks / studentMarks.length).toFixed(2);
+            const grade = getGradeFromMarks(parseFloat(averageMarks));
+            return { totalMarks, averageMarks, grade, subjectCount: studentMarks.length };
+        }
+
+        function getClassRanking(studentId, className, examType = null) {
+            const classStudents = schoolData.users.students.filter(s => s.class === className);
+            const studentPerformance = [];
+            classStudents.forEach(student => {
+                const perf = calculateStudentPerformance(student.id, examType);
+                if (perf) {
+                    studentPerformance.push({ studentId: student.id, studentName: student.name, average: parseFloat(perf.averageMarks) });
+                }
+            });
+            studentPerformance.sort((a, b) => b.average - a.average);
+            const position = studentPerformance.findIndex(s => s.studentId === studentId) + 1;
+            return { position, total: studentPerformance.length };
+        }
+
+        function generateComprehensiveReportCard(student) {
+            const midterm = calculateStudentPerformance(student.id, 'Midterm');
+            const terminal = calculateStudentPerformance(student.id, 'Terminal');
+            const midSept = calculateStudentPerformance(student.id, 'MidSeptember');
+            const annual = calculateStudentPerformance(student.id, 'Annual');
+            const overall = calculateStudentPerformance(student.id);
+            const ranking = getClassRanking(student.id, student.class);
+            const annualRanking = getClassRanking(student.id, student.class, 'Annual');
+            
+            let overallGrade = '';
+            let remarks = '';
+            if (overall && overall.averageMarks >= 75) { overallGrade = 'Excellent'; remarks = 'Outstanding performance! Keep up the excellent work.'; }
+            else if (overall && overall.averageMarks >= 65) { overallGrade = 'Very Good'; remarks = 'Very good performance. Continue working hard.'; }
+            else if (overall && overall.averageMarks >= 45) { overallGrade = 'Good'; remarks = 'Good performance. Shows consistent effort.'; }
+            else if (overall && overall.averageMarks >= 30) { overallGrade = 'Satisfactory'; remarks = 'Satisfactory. Needs improvement in some areas.'; }
+            else { overallGrade = 'Needs Improvement'; remarks = 'Requires more attention to studies. Please meet with teachers.'; }
+            
+            return `
+                <div style="font-family: 'Times New Roman'; max-width: 1000px; margin: 0 auto; background: white; padding: 40px;">
+                    <div style="text-align: center; border-bottom: 3px solid #1e3c72; padding-bottom: 20px;">
+                        <h1 style="color: #1e3c72;">UNHC-SMS</h1>
+                        <h2 style="color: #2a5298;">UBUNGO NHC SECONDARY SCHOOL</h2>
+                        <p>P.O. Box 55068, Ubungo, Dar es Salaam, Tanzania</p>
+                        <p>Tel: +255 754 200 790 | Email: ubungonhcsecondary@gmail.com</p>
+                        <h3>STUDENT ACADEMIC REPORT</h3>
+                        <p>Academic Year 2025/2026</p>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 10px;">
+                        <table style="width: 100%;">
+                            <tr><td style="padding: 8px;"><strong>Student Name:</strong> ${student.name} <td style="padding: 8px;"><strong>Student ID:</strong> ${student.id} </tr>
+                            <tr><td style="padding: 8px;"><strong>Class:</strong> ${student.class} <td style="padding: 8px;"><strong>Roll Number:</strong> ${student.rollNo} </tr>
+                            <tr><td style="padding: 8px;"><strong>Gender:</strong> ${student.gender || 'Male'} <td style="padding: 8px;"><strong>Date of Birth:</strong> ${student.dob || '2008-01-01'} </tr>
+                        </table>
+                    </div>
+                    
+                    <h3>📊 EXAMINATION PERFORMANCE SUMMARY</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+                        <thead><tr style="background: #1e3c72; color: white;"><th>Exam Type</th><th>Average Marks</th><th>Grade</th><th>Class Position</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Midterm Test</strong></td><td>${midterm ? midterm.averageMarks + '%' : 'N/A'}</td>
+                            <td><span class="badge badge-${midterm ? getGradeClass(parseFloat(midterm.averageMarks)) : 'F'}">${midterm ? midterm.grade : 'N/A'}</span></td>
+                            <td>${midterm ? getClassRanking(student.id, student.class, 'Midterm').position + '/' + getClassRanking(student.id, student.class, 'Midterm').total : 'N/A'}</td></tr>
+                            <tr><td><strong>Terminal Exam</strong></td><td>${terminal ? terminal.averageMarks + '%' : 'N/A'}</td>
+                            <td><span class="badge badge-${terminal ? getGradeClass(parseFloat(terminal.averageMarks)) : 'F'}">${terminal ? terminal.grade : 'N/A'}</span></td>
+                            <td>${terminal ? getClassRanking(student.id, student.class, 'Terminal').position + '/' + getClassRanking(student.id, student.class, 'Terminal').total : 'N/A'}</td></tr>
+                            <tr><td><strong>Mid-September Exam</strong></td><td>${midSept ? midSept.averageMarks + '%' : 'N/A'}</td>
+                            <td><span class="badge badge-${midSept ? getGradeClass(parseFloat(midSept.averageMarks)) : 'F'}">${midSept ? midSept.grade : 'N/A'}</span></td>
+                            <td>${midSept ? getClassRanking(student.id, student.class, 'MidSeptember').position + '/' + getClassRanking(student.id, student.class, 'MidSeptember').total : 'N/A'}</td></tr>
+                            <tr style="background: #e8f5e9;"><td><strong>Annual Exam</strong></td><td><strong>${annual ? annual.averageMarks + '%' : 'N/A'}</strong></td>
+                            <td><strong><span class="badge badge-${annual ? getGradeClass(parseFloat(annual.averageMarks)) : 'F'}">${annual ? annual.grade : 'N/A'}</span></strong></td>
+                            <td><strong>${annualRanking.position}/${annualRanking.total}</strong></td></tr>
+                            <tr style="background: #fff3e0;"><td><strong>Overall Performance</strong></td><td><strong>${overall ? overall.averageMarks + '%' : 'N/A'}</strong></td>
+                            <td><strong><span class="badge badge-${overall ? getGradeClass(parseFloat(overall.averageMarks)) : 'F'}">${overall ? overall.grade : 'N/A'}</span></strong></td>
+                            <td><strong>${ranking.position}/${ranking.total}</strong></td></tr>
+                        </tbody>
+                    </table>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: #fff3e0; border-radius: 10px;">
+                        <h4>👨‍🏫 TEACHER'S REMARKS</h4>
+                        <p>${remarks}</p>
+                        <p><strong>Class Teacher:</strong> ${getClassTeacher(student.class)}</p>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: #fce4ec; border-radius: 10px;">
+                        <h4>📢 HEADMINISTRESS MESSAGE</h4>
+                        <p>Congratulations on your academic progress! Continue working hard to achieve excellence. Remember that education is the key to success.</p>
+                        <p><strong>Miss. Rahabu Aminiel Nnko</strong><br>Headministress, Ubungo NHC Secondary School</p>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; border-top: 2px solid #ddd;">
+                        <div><p>_____________________</p><p>Class Teacher</p></div>
+                        <div><p>____________________</p><p>Headministress</p></div>
+                        <div><p>_____________________</p><p>Parent's Signature</p></div>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px; font-size: 11px; color: #999;">
+                        <p>Generated by UNHC-SMS on: ${new Date().toLocaleString()}</p>
+                        <p>This is a computer-generated report card</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getClassTeacher(className) {
+            const teacher = schoolData.users.teachers.find(t => t.class === className);
+            return teacher ? teacher.name : 'Not Assigned';
+        }
+
+        async function downloadComprehensiveReportCard(student) {
+            const html = generateComprehensiveReportCard(student);
+            const element = document.createElement('div');
+            element.innerHTML = html;
+            document.body.appendChild(element);
+            await html2pdf().from(element).set({ 
+                filename: `${student.name}_${student.id}_UNHC_Report.pdf`,
+                margin: 0.5,
+                html2canvas: { scale: 2 }
+            }).save();
+            document.body.removeChild(element);
+            showAlert(`Report card for ${student.name} downloaded from UNHC-SMS!`, 'success');
+        }
+
+        // Generate Unique ID
+        function generateId(role) {
+            if (role === 'teacher') return `T${String(schoolData.users.teachers.length + 1).padStart(3, '0')}`;
+            if (role === 'student') return `S${String(schoolData.users.students.length + 1).padStart(3, '0')}`;
+            if (role === 'parent') return `P${String(schoolData.users.parents.length + 1).padStart(3, '0')}`;
+            if (role === 'admin') return `ADMIN${schoolData.users.admin.length + 1}`;
+            return '';
+        }
+
+        // Add User Functions
+        function openAddUserModal() {
+            document.getElementById('addUserModal').style.display = 'flex';
+            document.getElementById('addUserForm').reset();
+            document.getElementById('teacherFields').style.display = 'none';
+            document.getElementById('studentFields').style.display = 'none';
+            document.getElementById('parentFields').style.display = 'none';
+        }
+
+        document.getElementById('userRole').addEventListener('change', function() {
+            const role = this.value;
+            document.getElementById('teacherFields').style.display = role === 'teacher' ? 'block' : 'none';
+            document.getElementById('studentFields').style.display = role === 'student' ? 'block' : 'none';
+            document.getElementById('parentFields').style.display = role === 'parent' ? 'block' : 'none';
+        });
+
+        document.getElementById('addUserForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const role = document.getElementById('userRole').value;
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const phone = document.getElementById('userPhone').value;
+            const password = document.getElementById('userPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            
+            if (!role || !name || !email || !password) { showAlert('Please fill all required fields!', 'error'); return; }
+            if (password !== confirm) { showAlert('Passwords do not match!', 'error'); return; }
+            if (password.length < 6) { showAlert('Password must be at least 6 characters!', 'error'); return; }
+            
+            const id = generateId(role);
+            const newUser = { id, password, name, email, phone, role, createdAt: new Date().toISOString().split('T')[0] };
+            
+            if (role === 'teacher') {
+                newUser.subject = document.getElementById('teacherSubject').value || 'General';
+                newUser.class = document.getElementById('teacherClass').value || '';
+                newUser.qualification = document.getElementById('teacherQualification').value || '';
+                newUser.experience = '0 years';
+                schoolData.users.teachers.push(newUser);
+            } else if (role === 'student') {
+                newUser.class = document.getElementById('studentClass').value || 'Form 1A';
+                newUser.rollNo = document.getElementById('studentRollNo').value || String(schoolData.users.students.length + 1);
+                newUser.dob = document.getElementById('studentDob').value || '2008-01-01';
+                newUser.gender = document.getElementById('studentGender').value;
+                newUser.parentId = null;
+                schoolData.users.students.push(newUser);
+            } else if (role === 'parent') {
+                newUser.studentId = document.getElementById('parentStudentId').value || null;
+                newUser.occupation = document.getElementById('parentOccupation').value || 'Professional';
+                schoolData.users.parents.push(newUser);
+            } else if (role === 'admin') {
+                schoolData.users.admin.push(newUser);
+            }
+            
+            saveData();
+            closeModal('addUserModal');
+            refreshAdminTables();
+            showAlert(`${role.toUpperCase()} added successfully to UNHC-SMS! ID: ${id}`, 'success');
+        });
+
+        // Exam Management
+        function openAddExamMarksModal() {
+            const studentSelect = document.getElementById('examStudentId');
+            studentSelect.innerHTML = '<option value="">Select Student</option>' + 
+                schoolData.users.students.map(s => `<option value="${s.id}">${s.name} (${s.class})</option>`).join('');
+            document.getElementById('addExamMarksModal').style.display = 'flex';
+            document.getElementById('addExamMarksForm').reset();
+        }
+
+        document.getElementById('addExamMarksForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const examType = document.getElementById('examType').value;
+            const studentId = document.getElementById('examStudentId').value;
+            const subject = document.getElementById('examSubject').value;
+            const marks = parseInt(document.getElementById('examMarks').value);
+            const term = document.getElementById('examTerm').value;
+            const student = schoolData.users.students.find(s => s.id === studentId);
+            
+            const id = `${studentId}_${examType}_${subject}_${Date.now()}`;
+            schoolData.examMarks.push({
+                id, studentId, studentName: student.name, examType, subject, marks, term, date: new Date().toISOString().split('T')[0]
+            });
+            saveData();
+            closeModal('addExamMarksModal');
+            if (currentUser.role === 'admin') refreshAdminTables();
+            else if (currentUser.role === 'teacher') loadTeacherDashboard();
+            showAlert(`${examType} marks for ${student.name} added to UNHC-SMS!`, 'success');
+        });
+
+        function deleteExamMark(id) {
+            if(confirm('Delete this exam record from UNHC-SMS?')){
+                schoolData.examMarks = schoolData.examMarks.filter(m => m.id !== id);
+                saveData();
+                if (currentUser.role === 'admin') refreshAdminTables();
+                else if (currentUser.role === 'teacher') loadTeacherDashboard();
+                showAlert('Exam record deleted from UNHC-SMS!', 'success');
+            }
+        }
+
+        // User Management Functions
+        function deleteUser(role, id) {
+            if(confirm(`Delete this ${role} from UNHC-SMS?`)){
+                if(role === 'teacher') schoolData.users.teachers = schoolData.users.teachers.filter(t => t.id !== id);
+                else if(role === 'student') {
+                    schoolData.users.students = schoolData.users.students.filter(s => s.id !== id);
+                    schoolData.examMarks = schoolData.examMarks.filter(m => m.studentId !== id);
+                }
+                else if(role === 'parent') schoolData.users.parents = schoolData.users.parents.filter(p => p.id !== id);
+                else if(role === 'admin') schoolData.users.admin = schoolData.users.admin.filter(a => a.id !== id);
+                saveData();
+                refreshAdminTables();
+                showAlert(`${role.toUpperCase()} deleted from UNHC-SMS!`, 'success');
+            }
+        }
+
+        function resetUserPassword(role, id) {
+            const newPwd = prompt('Enter new password (min 6 characters) for UNHC-SMS:');
+            if(newPwd && newPwd.length >= 6){
+                if(role === 'teacher') schoolData.users.teachers.find(t => t.id === id).password = newPwd;
+                else if(role === 'student') schoolData.users.students.find(s => s.id === id).password = newPwd;
+                else if(role === 'parent') schoolData.users.parents.find(p => p.id === id).password = newPwd;
+                else if(role === 'admin') schoolData.users.admin.find(a => a.id === id).password = newPwd;
+                saveData();
+                refreshAdminTables();
+                showAlert(`Password reset for ${id} in UNHC-SMS!`, 'success');
+            } else if(newPwd) showAlert('Password must be 6+ characters!', 'error');
+        }
+
+        // Download Functions
+        async function downloadAllReportCards() {
+            const students = schoolData.users.students;
+            showAlert(`UNHC-SMS: Downloading ${students.length} comprehensive report cards...`, 'success');
+            for(let i = 0; i < students.length; i++) {
+                setTimeout(() => downloadComprehensiveReportCard(students[i]), i * 2000);
+            }
+        }
+
+        function downloadSelectedReportCards() {
+            const selected = document.querySelectorAll('.student-select:checked');
+            if(selected.length === 0) { showAlert('Please select at least one student from UNHC-SMS!', 'error'); return; }
+            Array.from(selected).forEach((cb, i) => {
+                const student = schoolData.users.students.find(s => s.id === cb.value);
+                setTimeout(() => downloadComprehensiveReportCard(student), i * 2000);
+            });
+            showAlert(`UNHC-SMS: Downloading ${selected.length} report cards...`, 'success');
+        }
+
+        function loadClassStudents() {
+            const classSelect = document.getElementById('classSelect');
+            const selectedClass = classSelect?.value;
+            if(!selectedClass) return;
+            const students = schoolData.users.students.filter(s => s.class === selectedClass);
+            document.getElementById('classStudentsList').innerHTML = students.map(s => `
+                <div style="border:1px solid #ddd; border-radius:10px; padding:15px; background:#f9f9f9;">
+                    <input type="checkbox" class="student-select" value="${s.id}" style="margin-right:10px;">
+                    <strong>${s.name}</strong><br>
+                    <small>ID: ${s.id} | Roll: ${s.rollNo}</small><br>
+                    <button onclick="downloadComprehensiveReportCard(schoolData.users.students.find(st=>st.id==='${s.id}'))" class="btn-download" style="margin-top:10px; padding:5px 10px;"><i class="fas fa-file-pdf"></i> Download Report</button>
+                </div>
+            `).join('');
+        }
+
+        function loadRankings() {
+            const examType = document.getElementById('rankingExamSelect')?.value;
+            const classes = [...new Set(schoolData.users.students.map(s => s.class))];
+            const rankingsDiv = document.getElementById('rankingsList');
+            if(!rankingsDiv) return;
+            
+            rankingsDiv.innerHTML = classes.map(className => {
+                const classStudents = schoolData.users.students.filter(s => s.class === className);
+                const rankings = classStudents.map(s => {
+                    const perf = calculateStudentPerformance(s.id, examType || null);
+                    const rank = examType ? getClassRanking(s.id, className, examType) : getClassRanking(s.id, className);
+                    return { ...s, average: perf ? parseFloat(perf.averageMarks) : 0, grade: perf?.grade || 'N/A', position: rank.position };
+                }).sort((a,b) => b.average - a.average);
+                
+                return `
+                    <div style="margin-bottom: 30px;">
+                        <h3><i class="fas fa-school"></i> ${className} ${examType ? `- ${examType} Exam` : '- Overall Performance'}</h3>
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead><tr style="background: #1e3c72; color: white;"><th>Position</th><th>Student Name</th><th>Average %</th><th>Grade</th></tr></thead>
+                            <tbody>${rankings.map((s, idx) => `
+                                <tr>
+                                    <td><span class="${idx === 0 ? 'position-1st' : idx === 1 ? 'position-2nd' : idx === 2 ? 'position-3rd' : ''}" style="padding:4px 12px; border-radius:20px; display:inline-block;">${idx + 1}</span></td>
+                                    <td>${s.name}</td>
+                                    <td>${s.average}%</td>
+                                    <td><span class="badge badge-${getGradeClass(s.average)}">${s.grade}</span></td>
+                                </tr>
+                            `).join('')}</tbody>
+                        </table>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Admin Dashboard
+        function loadAdminDashboard() {
+            const uniqueClasses = [...new Set(schoolData.users.students.map(s => s.class))];
+            const container = document.getElementById('dashboardContent');
+            container.innerHTML = `
+                <div class="welcome-message">
+                    <h3><i class="fas fa-crown"></i> Welcome to UNHC-SMS, ${currentUser.name}</h3>
+                    <p>${new Date().toLocaleDateString('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' })}</p>
+                    <p><i class="fas fa-school"></i> Ubungo NHC Secondary School Management System</p>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card" onclick="showSection('usersSection')"><h3><i class="fas fa-users"></i> Total Users</h3><div class="stat-number">${schoolData.users.admin.length + schoolData.users.teachers.length + schoolData.users.students.length + schoolData.users.parents.length}</div></div>
+                    <div class="stat-card" onclick="showSection('studentsSection')"><h3><i class="fas fa-user-graduate"></i> Students</h3><div class="stat-number">${schoolData.users.students.length}</div></div>
+                    <div class="stat-card" onclick="showSection('teachersSection')"><h3><i class="fas fa-chalkboard-user"></i> Teachers</h3><div class="stat-number">${schoolData.users.teachers.length}</div></div>
+                    <div class="stat-card" onclick="showSection('parentsSection')"><h3><i class="fas fa-users"></i> Parents</h3><div class="stat-number">${schoolData.users.parents.length}</div></div>
+                </div>
+                
+                <div class="section active" id="dashboardSection">
+                    <div class="section-header"><h2><i class="fas fa-bullhorn"></i> Announcements</h2><button onclick="addAnnouncement()"><i class="fas fa-plus"></i> New</button></div>
+                    <div id="announcementsList"></div>
+                </div>
+                
+                <div class="section" id="usersSection">
+                    <div class="section-header"><h2><i class="fas fa-user-plus"></i> User Management - UNHC-SMS</h2><button onclick="openAddUserModal()"><i class="fas fa-plus-circle"></i> Add New User</button></div>
+                    <div class="table-container"><table><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Actions</th></tr></thead><tbody id="allUsersList"></tbody></table></div>
+                </div>
+                
+                <div class="section" id="studentsSection">
+                    <div class="section-header"><h2><i class="fas fa-user-graduate"></i> Student Management</h2><button onclick="openAddUserModalAndSetRole('student')"><i class="fas fa-plus"></i> Add Student</button></div>
+                    <div class="table-container"><table><thead><tr><th>ID</th><th>Name</th><th>Class</th><th>Roll No</th><th>Parent</th><th>Actions</th></tr></thead><tbody id="studentsList"></tbody></table></div>
+                </div>
+                
+                <div class="section" id="teachersSection">
+                    <div class="section-header"><h2><i class="fas fa-chalkboard-user"></i> Teacher Management</h2><button onclick="openAddUserModalAndSetRole('teacher')"><i class="fas fa-plus"></i> Add Teacher</button></div>
+                    <div class="table-container"><table><thead><tr><th>ID</th><th>Name</th><th>Subject</th><th>Class</th><th>Phone</th><th>Actions</th></tr></thead><tbody id="teachersList"></tbody></table></div>
+                </div>
+                
+                <div class="section" id="parentsSection">
+                    <div class="section-header"><h2><i class="fas fa-users"></i> Parent Management</h2><button onclick="openAddUserModalAndSetRole('parent')"><i class="fas fa-plus"></i> Add Parent</button></div>
+                    <div class="table-container"><table><thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Phone</th><th>Student</th><th>Actions</th></tr></thead><tbody id="parentsList"></tbody></table></div>
+                </div>
+                
+                <div class="section" id="examMarksSection">
+                    <div class="section-header"><h2><i class="fas fa-pen"></i> Exam Marks Management</h2><button onclick="openAddExamMarksModal()"><i class="fas fa-plus"></i> Add Marks</button></div>
+                    <div class="table-container"><table><thead><tr><th>Student</th><th>Exam Type</th><th>Subject</th><th>Marks</th><th>Grade</th><th>Actions</th></tr></thead><tbody id="examMarksList"></tbody></table></div>
+                </div>
+                
+                <div class="section" id="reportCardsSection">
+                    <div class="section-header"><h2><i class="fas fa-file-pdf"></i> Report Card Management</h2>
+                        <div><button onclick="downloadAllReportCards()" class="btn-download"><i class="fas fa-download"></i> All Students</button>
+                        <select id="classSelect" onchange="loadClassStudents()" style="padding: 10px;"><option value="">Select Class</option>${uniqueClasses.map(c=>`<option value="${c}">${c}</option>`).join('')}</select>
+                        <button onclick="downloadSelectedReportCards()" class="btn-info"><i class="fas fa-check-double"></i> Selected</button></div>
+                    </div>
+                    <div id="classStudentsList" style="display:grid; grid-template-columns:repeat(auto-fill,minmax(350px,1fr)); gap:20px;"></div>
+                </div>
+                
+                <div class="section" id="rankingSection">
+                    <div class="section-header"><h2><i class="fas fa-trophy"></i> Class Rankings</h2>
+                        <select id="rankingExamSelect" onchange="loadRankings()" style="padding: 10px;">
+                            <option value="">All Exams Combined</option>
+                            <option value="Midterm">Midterm Test</option>
+                            <option value="Terminal">Terminal Exam</option>
+                            <option value="MidSeptember">Mid-September Exam</option>
+                            <option value="Annual">Annual Exam</option>
+                        </select>
+                    </div>
+                    <div id="rankingsList"></div>
+                </div>
+                
+                <div class="section" id="feesSection">
+                    <div class="section-header"><h2><i class="fas fa-coins"></i> Fee Management</h2><button onclick="addFee()"><i class="fas fa-plus"></i> Add Fee</button></div>
+                    <div class="table-container"><table><thead><tr><th>Student</th><th>Amount</th><th>Due Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="feesList"></tbody></table></div>
+                </div>
+            `;
+            refreshAdminTables();
+            loadRankings();
+        }
+
+        function openAddUserModalAndSetRole(role) {
+            openAddUserModal();
+            document.getElementById('userRole').value = role;
+            document.getElementById('userRole').dispatchEvent(new Event('change'));
+        }
+
+        function refreshAdminTables() {
+            // All Users
+            const allUsers = [...schoolData.users.admin.map(u=>({...u,role:'admin'})), ...schoolData.users.teachers, ...schoolData.users.students, ...schoolData.users.parents];
+            document.getElementById('allUsersList').innerHTML = allUsers.map(u => `
+                <tr>
+                    <td>${u.id}</td><td>${u.name}</td><td>${u.email}</td><td><span class="badge badge-${u.role}">${u.role.toUpperCase()}</span></td>
+                    <td><button onclick="resetUserPassword('${u.role}','${u.id}')" class="btn-warning" style="padding:5px 10px;"><i class="fas fa-key"></i> Reset</button>
+                    <button onclick="deleteUser('${u.role}','${u.id}')" class="btn-danger" style="padding:5px 10px;"><i class="fas fa-trash"></i> Delete</button></td>
+                </tr>
+            `).join('');
+            
+            // Students
+            document.getElementById('studentsList').innerHTML = schoolData.users.students.map(s => {
+                const parent = schoolData.users.parents.find(p => p.studentId === s.id);
+                return `<tr>
+                    <td>${s.id}</td><td>${s.name}</td><td>${s.class}</td><td>${s.rollNo}</td><td>${parent ? parent.name : 'Not Assigned'}</td>
+                    <td><button onclick="downloadComprehensiveReportCard(schoolData.users.students.find(st=>st.id==='${s.id}'))" class="btn-download"><i class="fas fa-file-pdf"></i> Report</button>
+                    <button onclick="resetUserPassword('student','${s.id}')" class="btn-warning"><i class="fas fa-key"></i> Reset</button>
+                    <button onclick="deleteUser('student','${s.id}')" class="btn-danger"><i class="fas fa-trash"></i> Delete</button></td>
+                </tr>`;
+            }).join('');
+            
+            // Teachers
+            document.getElementById('teachersList').innerHTML = schoolData.users.teachers.map(t => `
+                <tr>
+                    <td>${t.id}</td><td>${t.name}</td><td>${t.subject}</td><td>${t.class}</td><td>${t.phone}</td>
+                    <td><button onclick="resetUserPassword('teacher','${t.id}')" class="btn-warning"><i class="fas fa-key"></i> Reset</button>
+                    <button onclick="deleteUser('teacher','${t.id}')" class="btn-danger"><i class="fas fa-trash"></i> Delete</button></td>
+                </tr>
+            `).join('');
+            
+            // Parents
+            document.getElementById('parentsList').innerHTML = schoolData.users.parents.map(p => {
+                const student = schoolData.users.students.find(s => s.id === p.studentId);
+                return `<tr>
+                    <td>${p.id}</td><td>${p.name}</td><td>${p.email}</td><td>${p.phone}</td><td>${student ? student.name : 'Not Assigned'}</td>
+                    <td><button onclick="resetUserPassword('parent','${p.id}')" class="btn-warning"><i class="fas fa-key"></i> Reset</button>
+                    <button onclick="deleteUser('parent','${p.id}')" class="btn-danger"><i class="fas fa-trash"></i> Delete</button></td>
+                </tr>`;
+            }).join('');
+            
+            // Exam Marks
+            document.getElementById('examMarksList').innerHTML = schoolData.examMarks.map(m => `
+                <tr>
+                    <td>${m.studentName}</td><td>${m.examType}</td><td>${m.subject}</td><td>${m.marks}%</td>
+                    <td><span class="badge badge-${getGradeClass(m.marks)}">${getGradeFromMarks(m.marks)}</span></td>
+                    <td><button onclick="deleteExamMark('${m.id}')" class="btn-danger"><i class="fas fa-trash"></i> Delete</button></td>
+                </tr>
+            `).join('');
+            
+            // Fees
+            document.getElementById('feesList').innerHTML = schoolData.fees.map(f => {
+                const s = schoolData.users.students.find(s => s.id === f.studentId);
+                return `<tr>
+                    <td>${s?.name || 'N/A'}</td><td>TZS ${f.amount.toLocaleString()}</td><td>${f.dueDate}</td>
+                    <td><span class="badge badge-${f.status.toLowerCase()}">${f.status}</span></td>
+                    <td><button onclick="updateFeeStatus('${f.id}')">Update</button></td>
+                </tr>`;
+            }).join('');
+            
+            // Announcements
+            document.getElementById('announcementsList').innerHTML = schoolData.announcements.map(a => `
+                <div style="padding:15px;border:1px solid #ddd;margin-bottom:10px;border-radius:8px;">
+                    <h3>${a.title}</h3><p>${a.content}</p><small>${a.date} by ${a.postedBy} (UNHC-SMS)</small>
+                </div>
+            `).join('');
+        }
+
+        // TEACHER DASHBOARD
+        function loadTeacherDashboard() {
+            const myStudents = schoolData.users.students.filter(s => s.class === currentUser.class);
+            const container = document.getElementById('dashboardContent');
+            container.innerHTML = `
+                <div class="welcome-message">
+                    <h3><i class="fas fa-chalkboard-user"></i> Welcome to UNHC-SMS, ${currentUser.name}</h3>
+                    <p>Subject: ${currentUser.subject} | Class: ${currentUser.class}</p>
+                    <div style="margin-top: 10px;">
+                        <button onclick="openAddExamMarksModal()" class="btn-info"><i class="fas fa-plus"></i> Enter Exam Marks</button>
+                        <button onclick="location.reload()" class="btn-primary"><i class="fas fa-sync-alt"></i> Refresh</button>
+						
+                    </div>
+                </div>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card"><h3><i class="fas fa-user-graduate"></i> My Students</h3><div class="stat-number">${myStudents.length}</div></div>
+                    <div class="stat-card"><h3><i class="fas fa-file-alt"></i> Exam Records</h3><div class="stat-number">${schoolData.examMarks.filter(m => myStudents.some(s => s.id === m.studentId)).length}</div></div>
+                    <div class="stat-card"><h3><i class="fas fa-trophy"></i> Class Average</h3><div class="stat-number">${calculateClassAverage(currentUser.class)}%</div></div>
+                </div>
+                
+                <div class="section active" id="myStudentsSection">
+                    <div class="section-header">
+                        <h2><i class="fas fa-users"></i> My Students - Performance Overview</h2>
+                        <button onclick="downloadClassReportCards('${currentUser.class}')" class="btn-download"><i class="fas fa-file-pdf"></i> Download All Reports</button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr style="background: #1e3c72; color: white;">
+                                    <th>ID</th><th>Student Name</th><th>Roll No</th>
+                                    <th>Midterm</th><th>Terminal</th><th>Mid-Sept</th><th>Annual</th>
+                                    <th>Overall Avg</th><th>Grade</th><th>Position</th><th>Actions</th>
+                                 </tr>
+                            </thead>
+                            <tbody>
+                                ${myStudents.map(s => {
+                                    const midterm = calculateStudentPerformance(s.id, 'Midterm');
+                                    const terminal = calculateStudentPerformance(s.id, 'Terminal');
+                                    const midSept = calculateStudentPerformance(s.id, 'MidSeptember');
+                                    const annual = calculateStudentPerformance(s.id, 'Annual');
+                                    const overall = calculateStudentPerformance(s.id);
+                                    const ranking = getClassRanking(s.id, currentUser.class);
+                                    return `
+                                     <tr>
+                                         <td>${s.id}</td>
+                                         <td><strong>${s.name}</strong></td>
+                                         <td>${s.rollNo}</td>
+                                         <td>${midterm ? midterm.averageMarks + '%' : '-'}</td>
+                                         <td>${terminal ? terminal.averageMarks + '%' : '-'}</td>
+                                         <td>${midSept ? midSept.averageMarks + '%' : '-'}</td>
+                                         <td>${annual ? annual.averageMarks + '%' : '-'}</td>
+                                         <td><strong>${overall ? overall.averageMarks + '%' : '-'}</strong></td>
+                                         <td><span class="badge badge-${overall ? getGradeClass(parseFloat(overall.averageMarks)) : 'F'}">${overall ? overall.grade : 'N/A'}</span></td>
+                                         <td><span class="${ranking.position === 1 ? 'position-1st' : ranking.position === 2 ? 'position-2nd' : ranking.position === 3 ? 'position-3rd' : ''}">${ranking.position}/${ranking.total}</span></td>
+                                         <td>
+                                            <button onclick="viewStudentDetails('${s.id}')" class="btn-info" style="padding:5px 10px;"><i class="fas fa-eye"></i> View</button>
+                                            <button onclick="downloadComprehensiveReportCard(schoolData.users.students.find(st=>st.id==='${s.id}'))" class="btn-download" style="padding:5px 10px;"><i class="fas fa-file-pdf"></i> PDF</button>
+                                         </td>
+                                     </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                         </table>
+                    </div>
+                </div>
+                
+                <div class="section" id="examMarksSection">
+                    <div class="section-header"><h2><i class="fas fa-pen"></i> Exam Marks Records</h2></div>
+                    <div class="table-container">
+                         <table>
+                            <thead><tr style="background: #1e3c72; color: white;"><th>Student</th><th>Exam Type</th><th>Subject</th><th>Marks</th><th>Grade</th><th>Actions</th></tr></thead>
+                            <tbody id="teacherExamMarksList"></tbody>
+                         </table>
+                    </div>
+                </div>
+                
+                <div class="section" id="rankingSection">
+                    <div class="section-header"><h2><i class="fas fa-trophy"></i> Class Rankings - ${currentUser.class}</h2>
+                        <select id="teacherRankingExamSelect" onchange="loadTeacherRankings()" style="padding: 10px;">
+                            <option value="">All Exams Combined</option>
+                            <option value="Midterm">Midterm Test</option>
+                            <option value="Terminal">Terminal Exam</option>
+                            <option value="MidSeptember">Mid-September Exam</option>
+                            <option value="Annual">Annual Exam</option>
+                        </select>
+                    </div>
+                    <div id="teacherRankingsList"></div>
+                </div>
+            `;
+            
+            const myStudentsIds = myStudents.map(s => s.id);
+            const teacherExamMarks = schoolData.examMarks.filter(m => myStudentsIds.includes(m.studentId));
+            document.getElementById('teacherExamMarksList').innerHTML = teacherExamMarks.map(m => `
+                 <tr>
+                     <td>${m.studentName}</td>
+                     <td>${m.examType}</td>
+                     <td>${m.subject}</td>
+                     <td>${m.marks}%</td>
+                     <td><span class="badge badge-${getGradeClass(m.marks)}">${getGradeFromMarks(m.marks)}</span></td>
+                     <td><button onclick="deleteExamMark('${m.id}')" class="btn-danger" style="padding:5px 10px;"><i class="fas fa-trash"></i> Delete</button></td>
+                 </tr>
+            `).join('');
+            
+            loadTeacherRankings();
+        }
+        
+        function calculateClassAverage(className) {
+            const classStudents = schoolData.users.students.filter(s => s.class === className);
+            let totalAvg = 0;
+            let count = 0;
+            classStudents.forEach(s => {
+                const perf = calculateStudentPerformance(s.id);
+                if (perf) {
+                    totalAvg += parseFloat(perf.averageMarks);
+                    count++;
+                }
+            });
+            return count > 0 ? (totalAvg / count).toFixed(1) : 0;
+        }
+        
+        function downloadClassReportCards(className) {
+            const classStudents = schoolData.users.students.filter(s => s.class === className);
+            showAlert(`UNHC-SMS: Downloading ${classStudents.length} report cards for ${className}...`, 'success');
+            classStudents.forEach((s, i) => setTimeout(() => downloadComprehensiveReportCard(s), i * 2000));
+        }
+        
+        function viewStudentDetails(studentId) {
+            const student = schoolData.users.students.find(s => s.id === studentId);
+            if (!student) return;
+            const overall = calculateStudentPerformance(studentId);
+            const ranking = getClassRanking(studentId, student.class);
+            const midterm = calculateStudentPerformance(studentId, 'Midterm');
+            const terminal = calculateStudentPerformance(studentId, 'Terminal');
+            const midSept = calculateStudentPerformance(studentId, 'MidSeptember');
+            const annual = calculateStudentPerformance(studentId, 'Annual');
+            
+            const studentMarks = schoolData.examMarks.filter(m => m.studentId === studentId);
+            const groupedMarks = {};
+            studentMarks.forEach(m => {
+                if (!groupedMarks[m.examType]) groupedMarks[m.examType] = [];
+                groupedMarks[m.examType].push(m);
+            });
+            
+            let marksHtml = '';
+            for (const [exam, marks] of Object.entries(groupedMarks)) {
+                marksHtml += `
+                    <div class="exam-card">
+                        <h4>${exam === 'Midterm' ? '📝 Midterm Test' : exam === 'Terminal' ? '📚 Terminal Exam' : exam === 'MidSeptember' ? '🍂 Mid-September Exam' : '🎓 Annual Exam'}</h4>
+                        <table style="width:100%; margin-top:10px;">
+                            <thead><tr><th>Subject</th><th>Marks</th><th>Grade</th></tr></thead>
+                            <tbody>${marks.map(m => `<tr><td>${m.subject}</td><td>${m.marks}%</td><td><span class="badge badge-${getGradeClass(m.marks)}">${getGradeFromMarks(m.marks)}</span></td></tr>`).join('')}</tbody>
+                        </table>
+                    </div>
+                `;
+            }
+            
+            const modalHtml = `
+                <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:2000; display:flex; justify-content:center; align-items:center;">
+                    <div style="background:white; border-radius:15px; max-width:800px; width:90%; max-height:80vh; overflow-y:auto; padding:25px;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                            <h2 style="color:#1e3c72;">UNHC-SMS Student Details: ${student.name}</h2>
+                            <button onclick="this.closest('div').parentElement.remove()" style="background:#dc3545; padding:5px 15px;">✖ Close</button>
+                        </div>
+                        <div style="background:#f8f9fa; padding:15px; border-radius:10px; margin-bottom:20px;">
+                            <p><strong>ID:</strong> ${student.id}</p>
+                            <p><strong>Class:</strong> ${student.class} | <strong>Roll No:</strong> ${student.rollNo}</p>
+                            <p><strong>Email:</strong> ${student.email}</p>
+                        </div>
+                        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px;">
+                            <div style="background:#e8f5e9; padding:10px; border-radius:8px; text-align:center;">
+                                <strong>Midterm</strong><br>${midterm ? midterm.averageMarks + '%' : 'N/A'}
+                            </div>
+                            <div style="background:#e8f5e9; padding:10px; border-radius:8px; text-align:center;">
+                                <strong>Terminal</strong><br>${terminal ? terminal.averageMarks + '%' : 'N/A'}
+                            </div>
+                            <div style="background:#e8f5e9; padding:10px; border-radius:8px; text-align:center;">
+                                <strong>Mid-Sept</strong><br>${midSept ? midSept.averageMarks + '%' : 'N/A'}
+                            </div>
+                            <div style="background:#ffd700; padding:10px; border-radius:8px; text-align:center;">
+                                <strong>Annual</strong><br>${annual ? annual.averageMarks + '%' : 'N/A'}
+                            </div>
+                        </div>
+                        <div style="background:#e3f2fd; padding:15px; border-radius:10px; margin-bottom:20px;">
+                            <p><strong>Overall Average:</strong> ${overall ? overall.averageMarks + '%' : 'N/A'}</p>
+                            <p><strong>Overall Grade:</strong> ${overall ? overall.grade : 'N/A'}</p>
+                            <p><strong>Class Position:</strong> ${ranking.position}/${ranking.total}</p>
+                        </div>
+                        <h3>Detailed Exam Marks</h3>
+                        ${marksHtml || '<p>No exam records found.</p>'}
+                        <div style="margin-top:20px; text-align:center;">
+                            <button onclick="downloadComprehensiveReportCard(schoolData.users.students.find(s=>s.id==='${studentId}'))" class="btn-download"><i class="fas fa-file-pdf"></i> Download Full Report</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+        
+        function loadTeacherRankings() {
+            const examType = document.getElementById('teacherRankingExamSelect')?.value;
+            const className = currentUser.class;
+            const classStudents = schoolData.users.students.filter(s => s.class === className);
+            const rankings = classStudents.map(s => {
+                const perf = calculateStudentPerformance(s.id, examType || null);
+                const rank = examType ? getClassRanking(s.id, className, examType) : getClassRanking(s.id, className);
+                return { ...s, average: perf ? parseFloat(perf.averageMarks) : 0, grade: perf?.grade || 'N/A', position: rank.position };
+            }).sort((a,b) => b.average - a.average);
+            
+            document.getElementById('teacherRankingsList').innerHTML = `
+                <table style="width:100%; border-collapse:collapse;">
+                    <thead><tr style="background:#1e3c72; color:white;"><th>Position</th><th>Student Name</th><th>Average %</th><th>Grade</th></tr></thead>
+                    <tbody>${rankings.map((s, idx) => `
+                         <tr>
+                             <td><span class="${idx === 0 ? 'position-1st' : idx === 1 ? 'position-2nd' : idx === 2 ? 'position-3rd' : ''}">${idx + 1}</span></td>
+                             <td><strong>${s.name}</strong></td>
+                             <td>${s.average}%</td>
+                             <td><span class="badge badge-${getGradeClass(s.average)}">${s.grade}</span></td>
+                         </tr>
+                    `).join('')}</tbody>
+                </table>
+            `;
+        }
+
+        // Student Dashboard
+        function loadStudentDashboard() {
+            const perf = calculateStudentPerformance(currentUser.id);
+            const ranking = getClassRanking(currentUser.id, currentUser.class);
+            const midterm = calculateStudentPerformance(currentUser.id, 'Midterm');
+            const terminal = calculateStudentPerformance(currentUser.id, 'Terminal');
+            const midSept = calculateStudentPerformance(currentUser.id, 'MidSeptember');
+            const annual = calculateStudentPerformance(currentUser.id, 'Annual');
+            
+            const studentMarks = schoolData.examMarks.filter(m => m.studentId === currentUser.id);
+            const groupedMarks = {};
+            studentMarks.forEach(m => {
+                if (!groupedMarks[m.examType]) groupedMarks[m.examType] = [];
+                groupedMarks[m.examType].push(m);
+            });
+            
+            let marksHtml = '';
+            for (const [exam, marks] of Object.entries(groupedMarks)) {
+                marksHtml += `
+                    <div class="exam-card">
+                        <h4>${exam === 'Midterm' ? '📝 Midterm Test' : exam === 'Terminal' ? '📚 Terminal Exam' : exam === 'MidSeptember' ? '🍂 Mid-September Exam' : '🎓 Annual Exam'}</h4>
+                        <table style="width:100%;">
+                            <thead><tr><th>Subject</th><th>Marks</th><th>Grade</th></tr></thead>
+                            <tbody>${marks.map(m => `<tr><td>${m.subject}</td><td>${m.marks}%</td><td><span class="badge badge-${getGradeClass(m.marks)}">${getGradeFromMarks(m.marks)}</span></td></tr>`).join('')}</tbody>
+                        </table>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('dashboardContent').innerHTML = `
+                <div class="welcome-message">
+                    <h3><i class="fas fa-user-graduate"></i> Welcome to UNHC-SMS, ${currentUser.name}</h3>
+                    <p>Class: ${currentUser.class} | Roll No: ${currentUser.rollNo}</p>
+                    <button onclick="downloadComprehensiveReportCard(currentUser)" class="btn-download"><i class="fas fa-file-pdf"></i> Download My Report</button>
+                </div>
+                <div class="dashboard-stats">
+                    <div class="stat-card"><h3>Overall Average</h3><div class="stat-number">${perf ? perf.averageMarks + '%' : 'N/A'}</div></div>
+                    <div class="stat-card"><h3>Overall Grade</h3><div class="stat-number">${perf ? perf.grade : 'N/A'}</div></div>
+                    <div class="stat-card"><h3>Class Position</h3><div class="stat-number">${ranking.position}/${ranking.total}</div></div>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:20px;">
+                    <div style="background:#e8f5e9; padding:15px; border-radius:10px; text-align:center;">
+                        <strong>📝 Midterm</strong><br>${midterm ? midterm.averageMarks + '%' : 'N/A'}<br><small>${midterm ? midterm.grade : ''}</small>
+                    </div>
+                    <div style="background:#e8f5e9; padding:15px; border-radius:10px; text-align:center;">
+                        <strong>📚 Terminal</strong><br>${terminal ? terminal.averageMarks + '%' : 'N/A'}<br><small>${terminal ? terminal.grade : ''}</small>
+                    </div>
+                    <div style="background:#e8f5e9; padding:15px; border-radius:10px; text-align:center;">
+                        <strong>🍂 Mid-Sept</strong><br>${midSept ? midSept.averageMarks + '%' : 'N/A'}<br><small>${midSept ? midSept.grade : ''}</small>
+                    </div>
+                    <div style="background:#ffd700; padding:15px; border-radius:10px; text-align:center;">
+                        <strong>🎓 Annual</strong><br>${annual ? annual.averageMarks + '%' : 'N/A'}<br><small>${annual ? annual.grade : ''}</small>
+                    </div>
+                </div>
+                <div class="section active">
+                    <div class="section-header"><h2><i class="fas fa-chart-line"></i> My Performance</h2></div>
+                    ${marksHtml || '<p>No exam records found yet.</p>'}
+                </div>
+            `;
+        }
+
+        // Parent Dashboard
+        function loadParentDashboard() {
+            const child = schoolData.users.students.find(s => s.id === currentUser.studentId);
+            if(!child) return;
+            const perf = calculateStudentPerformance(child.id);
+            const ranking = getClassRanking(child.id, child.class);
+            
+            document.getElementById('dashboardContent').innerHTML = `
+                <div class="welcome-message">
+                    <h3><i class="fas fa-users"></i> Welcome to UNHC-SMS, ${currentUser.name}</h3>
+                    <p>Your Child: ${child.name} (${child.class})</p>
+                    <button onclick="downloadComprehensiveReportCard(child)" class="btn-download"><i class="fas fa-file-pdf"></i> DOWNLOAD STUDENT REPORT</button>
+                </div>
+                <div class="dashboard-stats">
+                    <div class="stat-card"><h3>Child's Average</h3><div class="stat-number">${perf ? perf.averageMarks + '%' : 'N/A'}</div></div>
+                    <div class="stat-card"><h3>Overall Grade</h3><div class="stat-number">${perf ? perf.grade : 'N/A'}</div></div>
+                    <div class="stat-card"><h3>Class Position</h3><div class="stat-number">${ranking.position}/${ranking.total}</div></div>
+                </div>
+                <div class="section active">
+                    <div class="section-header"><h2><i class="fas fa-info-circle"></i> Child's Information</h2></div>
+                    <div class="table-container">
+                        <table>
+                            <tr><td><strong>Student ID:</strong></td><td>${child.id}</td></tr>
+                            <tr><td><strong>Roll Number:</strong></td><td>${child.rollNo}</td></tr>
+                            <tr><td><strong>Email:</strong></td><td>${child.email}</td></tr>
+                            <tr><td><strong>Date of Birth:</strong></td><td>${child.dob || 'Not specified'}</td></tr>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        // CRUD Operations
+        function addAnnouncement() {
+            const title = prompt('Announcement title:');
+            const content = prompt('Announcement content:');
+            if(title && content){
+                schoolData.announcements.push({ id: `A${Date.now()}`, title, content, date: new Date().toISOString().split('T')[0], postedBy: currentUser.name });
+                saveData(); 
+                if(currentUser.role === 'admin') refreshAdminTables();
+                showAlert('Announcement added to UNHC-SMS!', 'success');
+            }
+        }
+
+        function addFee() {
+            const studentId = prompt('Student ID:');
+            const amount = prompt('Amount (TZS):');
+            if(studentId && amount){
+                schoolData.fees.push({ id: `F_${Date.now()}`, studentId, amount: parseFloat(amount), dueDate: '2024-03-31', status: 'Pending' });
+                saveData(); 
+                if(currentUser.role === 'admin') refreshAdminTables();
+                showAlert('Fee record added to UNHC-SMS!', 'success');
+            }
+        }
+
+        function updateFeeStatus(id) {
+            const fee = schoolData.fees.find(f => f.id === id);
+            if(fee){
+                const status = prompt('Enter status (Paid/Pending):', fee.status);
+                if(status){ fee.status = status; saveData(); if(currentUser.role === 'admin') refreshAdminTables(); showAlert('Fee status updated in UNHC-SMS!', 'success'); }
+            }
+        }
+
+        // Password Management
+        function showForgotPassword() { document.getElementById('forgotPasswordModal').style.display = 'flex'; }
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+        function openChangePasswordModal() { document.getElementById('changePasswordModal').style.display = 'flex'; }
+
+        document.getElementById('forgotPasswordForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const type = document.getElementById('resetUserType').value;
+            const username = document.getElementById('resetUsername').value;
+            const newPwd = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPasswordReset').value;
+            if(newPwd !== confirm) { showAlert('Passwords do not match!', 'error'); return; }
+            if(newPwd.length < 6) { showAlert('Password must be 6+ chars!', 'error'); return; }
+            let found = false;
+            if(type === 'admin') { let u = schoolData.users.admin.find(a=>a.id===username); if(u){ u.password=newPwd; found=true; } }
+            else if(type === 'teacher') { let u = schoolData.users.teachers.find(t=>t.id===username); if(u){ u.password=newPwd; found=true; } }
+            else if(type === 'student') { let u = schoolData.users.students.find(s=>s.id===username); if(u){ u.password=newPwd; found=true; } }
+            else if(type === 'parent') { let u = schoolData.users.parents.find(p=>p.id===username); if(u){ u.password=newPwd; found=true; } }
+            if(found){ saveData(); closeModal('forgotPasswordModal'); showAlert('Password reset successful in UNHC-SMS!', 'success'); }
+            else showAlert('User not found in UNHC-SMS!', 'error');
+        });
+
+        document.getElementById('changePasswordForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const current = document.getElementById('currentPassword').value;
+            const newPwd = document.getElementById('newPasswordChange').value;
+            const confirm = document.getElementById('confirmNewPassword').value;
+            let valid = false;
+            if(currentUser.role === 'admin') valid = schoolData.users.admin.find(a=>a.id===currentUser.id)?.password === current;
+            else if(currentUser.role === 'teacher') valid = schoolData.users.teachers.find(t=>t.id===currentUser.id)?.password === current;
+            else if(currentUser.role === 'student') valid = schoolData.users.students.find(s=>s.id===currentUser.id)?.password === current;
+            else if(currentUser.role === 'parent') valid = schoolData.users.parents.find(p=>p.id===currentUser.id)?.password === current;
+            if(!valid){ showAlert('Current password incorrect!', 'error'); return; }
+            if(newPwd !== confirm){ showAlert('New passwords do not match!', 'error'); return; }
+            if(newPwd.length < 6){ showAlert('Password must be 6+ chars!', 'error'); return; }
+            if(currentUser.role === 'admin') schoolData.users.admin.find(a=>a.id===currentUser.id).password = newPwd;
+            else if(currentUser.role === 'teacher') schoolData.users.teachers.find(t=>t.id===currentUser.id).password = newPwd;
+            else if(currentUser.role === 'student') schoolData.users.students.find(s=>s.id===currentUser.id).password = newPwd;
+            else if(currentUser.role === 'parent') schoolData.users.parents.find(p=>p.id===currentUser.id).password = newPwd;
+            saveData(); closeModal('changePasswordModal'); showAlert('Password changed in UNHC-SMS!', 'success');
+        });
+
+        function selectUserType(type) { selectedUserType = type; document.querySelectorAll('.user-type-btn').forEach(btn=>btn.classList.remove('active')); event.target.classList.add('active'); }
+
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            let user = null;
+            if(selectedUserType === 'admin') user = schoolData.users.admin.find(a=>a.id===username && a.password===password);
+            else if(selectedUserType === 'teacher') user = schoolData.users.teachers.find(t=>t.id===username && t.password===password);
+            else if(selectedUserType === 'student') user = schoolData.users.students.find(s=>s.id===username && s.password===password);
+            else if(selectedUserType === 'parent') user = schoolData.users.parents.find(p=>p.id===username && p.password===password);
+            if(user){ currentUser = {...user, role: selectedUserType}; document.getElementById('loginPage').style.display='none'; document.getElementById('appContainer').style.display='block'; document.getElementById('currentUser').innerHTML = `<i class="fas fa-user-circle"></i> ${user.name} (${selectedUserType.toUpperCase()})`; loadDashboard(); showAlert(`Welcome to UNHC-SMS - Ubungo NHC Secondary School Management System!`, 'success'); }
+            else document.getElementById('loginError').textContent = 'Invalid credentials for UNHC-SMS!';
+        });
+
+        function logout() { currentUser = null; document.getElementById('loginPage').style.display='flex'; document.getElementById('appContainer').style.display='none'; document.getElementById('loginForm').reset(); document.getElementById('loginError').textContent=''; }
+
+        function loadDashboard() {
+            const navLinks = document.getElementById('navLinks');
+            if(currentUser.role === 'admin'){
+                navLinks.innerHTML = `<button class="nav-btn active" onclick="showSection('dashboardSection')"><i class="fas fa-tachometer-alt"></i> Dashboard</button>
+                <button class="nav-btn" onclick="showSection('usersSection')"><i class="fas fa-users"></i> All Users</button>
+                <button class="nav-btn" onclick="showSection('studentsSection')"><i class="fas fa-user-graduate"></i> Students</button>
+                <button class="nav-btn" onclick="showSection('teachersSection')"><i class="fas fa-chalkboard-user"></i> Teachers</button>
+                <button class="nav-btn" onclick="showSection('parentsSection')"><i class="fas fa-users"></i> Parents</button>
+                <button class="nav-btn" onclick="showSection('examMarksSection')"><i class="fas fa-pen"></i> Exam Marks</button>
+                <button class="nav-btn" onclick="showSection('reportCardsSection')"><i class="fas fa-file-pdf"></i> Report Cards</button>
+                <button class="nav-btn" onclick="showSection('rankingSection')"><i class="fas fa-trophy"></i> Rankings</button>
+                <button class="nav-btn" onclick="showSection('feesSection')"><i class="fas fa-coins"></i> Fees</button>`;
+                loadAdminDashboard();
+			}else if(currentUser.role === 'teacher'){
+                navLinks.innerHTML = `<button class="nav-btn active" onclick="showSection('myStudentsSection')"><i class="fas fa-users"></i> My Students</button>
+                <button class="nav-btn" onclick="showSection('examMarksSection')"><i class="fas fa-pen"></i> Exam Marks</button>
+                <button class="nav-btn" onclick="showSection('rankingSection')"><i class="fas fa-trophy"></i> Rankings</button>`;
+                loadTeacherDashboard();
+            } else if(currentUser.role === 'student'){
+                navLinks.innerHTML = `<button class="nav-btn active"><i class="fas fa-graduation-cap"></i> My Dashboard</button>`;
+                loadStudentDashboard();
+            } else if(currentUser.role === 'parent'){
+                navLinks.innerHTML = `<button class="nav-btn active"><i class="fas fa-heart"></i> My Dashboard</button>`;
+                loadParentDashboard();
+            }
+        }
+
+        function showSection(sectionName) {
+            document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+            if(document.getElementById(sectionName)) document.getElementById(sectionName).classList.add('active');
+        }
+
+        function saveData() { localStorage.setItem('unhc_sms_data', JSON.stringify(schoolData)); }
+        function loadData() {
+            const saved = localStorage.getItem('unhc_sms_data');
+            if (saved) schoolData = JSON.parse(saved);
+            initializeExamData();
+        }
+
+        function showAlert(msg,type){ const a=document.getElementById('alert'); a.className=`alert alert-${type}`; a.innerHTML=`<i class="fas fa-${type==='success'?'check-circle':'exclamation-circle'}"></i> ${msg}`; a.style.display='block'; setTimeout(()=>a.style.display='none',3000); }
+
+        loadData();
+        window.onclick = function(e){ if(e.target.classList.contains('modal')) e.target.style.display='none'; }
+    </script>
+</body>
+</html>
